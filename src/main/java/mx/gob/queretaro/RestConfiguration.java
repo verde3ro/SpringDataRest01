@@ -8,7 +8,11 @@ import javax.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.core.mapping.ExposureConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.http.HttpMethod;
+
+import mx.gob.queretaro.model.City;
 
 
 @Configuration
@@ -29,6 +33,11 @@ public class RestConfiguration implements RepositoryRestConfigurer {
 				.stream() // las preparo para modificar
 				.map(EntityType::getJavaType) // las modifico
 				.collect(Collectors.toList()).toArray(new Class[0])); // regreso el resultado
+
+		ExposureConfiguration exposureConfig = config.getExposureConfiguration();
+		exposureConfig.forDomainType(City.class)
+		.withItemExposure(((metdata, httpMethods) -> httpMethods.disable(HttpMethod.PATCH)))
+		.withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(HttpMethod.PATCH)));
 
 	}
 }
