@@ -18,11 +18,11 @@ public interface ICityRepository extends JpaRepository<City, Short> {
 
 
 	@RestResource(path = "porId", rel = "porId")
-	@Query("SELECT NEW City(c.cityId, c.city) FROM City c WHERE cityId = :cityId")
+	@Query("SELECT NEW City(c.cityId, c.city) FROM City c WHERE c.cityId = :cityId")
 	City obtenerPorId(@Param("cityId") Short cityId);
 
 	// Para omitir la salida del end point Delete
-	// @Override
-	// @RestResource(exported = false)
-	//void delete(City t);
+	@Override
+	@RestResource(exported = false)
+	void delete(City t);
 }
